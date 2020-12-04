@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 12:26:35 by abourbou          #+#    #+#             */
-/*   Updated: 2020/12/04 15:44:30 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2020/12/04 16:57:07 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int		ft_atoi(char *str)
 	{
 		nbr *= 10;
 		nbr += str[i] - '0';
+		i++;
 	}
 	return (nbr);
 }

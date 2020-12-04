@@ -6,7 +6,7 @@
 #    By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/04 12:09:13 by abourbou          #+#    #+#              #
-#    Updated: 2020/12/04 15:50:05 by abourbou         ###   ########lyon.fr    #
+#    Updated: 2020/12/04 17:02:22 by abourbou         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,12 @@ CFLAGS				= -Wall -Werror -Wextra
 all					:	$(NAME)
 
 $(NAME)				:	$(OBJ) $(INCLUDE)
-						$(CC) -o $@ $(CFLAGS) $<
+						@$(CC) -o $@ $(CFLAGS) $(OBJ)
 
 %.o					:	%.c . $(INCLUDE)
-						$(CC) -c $< -I$(PATH_INC) -o $@ $(CFLAGS)
+						@$(CC) -c $< -I$(PATH_INC) -o $@ $(CFLAGS)
+
+fclean				:
+						rm -f $(OBJ)
+
+re					:	fclean all
