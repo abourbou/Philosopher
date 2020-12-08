@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 12:22:41 by abourbou          #+#    #+#             */
-/*   Updated: 2020/12/04 15:49:14 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2020/12/04 17:45:26 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <stdlib.h>
+
+//!TO ERASE
+#include <stdio.h>
 
 typedef struct	s_args
 {
@@ -33,12 +36,12 @@ typedef struct s_mutex
 	pthread_mutex_t	speak;
 }				t_mutex;
 
-
 typedef struct	s_kit
 {
 	int		serial_number;
-	t_args	args;
-	t_mutex	mutex;
+	int		forks[2];
+	t_args	*args;
+	t_mutex	*mutex;
 }				t_kit;
 
 //TOOLS_C
@@ -47,4 +50,8 @@ int		ft_atoi(char *str);
 
 //INIT_C
 int		total_initialization(int argc, char **argv, t_args *args, t_mutex *mutex);
+
+//LAUNCH_THREAD_C
+int		launch_thread(t_args *args, t_mutex *mutex);
+
 #endif

@@ -6,7 +6,7 @@
 #    By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/04 12:09:13 by abourbou          #+#    #+#              #
-#    Updated: 2020/12/04 17:02:22 by abourbou         ###   ########lyon.fr    #
+#    Updated: 2020/12/04 17:31:26 by abourbou         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ PATH_SRC			=	srcs
 PATH_INC			=	include
 
 #NAME OF FILES
-SRC_NAME			=	tools.c init.c
+SRC_NAME			=	tools.c init.c launch_thread.c
 
 INC_NAME			=	philo.h
 
