@@ -9,7 +9,7 @@ SRC			=	$(addprefix $(SRC_PATH)/,$(SOURCE)) main.c
 
 SRC_PATH	=	src
 
-SOURCE		=	tools.c
+SOURCE		=	tools.c launch_threads.c
 
 HEADER		=	$(addprefix $(INC_PATH)/,$(INCLUDE))
 
@@ -25,7 +25,7 @@ $(NAME)		:	$(OBJ)
 				$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lpthread
 
 %.o			:	%.c $(HEADER)
-				$(CC) $(FLAGS) -c $< -o $@
+				$(CC) $(FLAGS) -I headers -c $< -o $@
 
 clean		:
 				rm -rf $(OBJ) main.o

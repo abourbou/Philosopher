@@ -37,16 +37,15 @@ typedef struct	s_vars
 	int				max_meal;
 	int				*compt_meal;
 	int				stop;
-	unsigned long	size_tab_kit;
+	unsigned long	size_arr_kit;
 }				t_vars;
 
 typedef struct	s_phil_kit
 {
 	t_vars	*vars;
-	long	my_number;
-	long	meal;
+	int		my_number;
+	int		meal;
 }				t_phil_kit;
-
 
 // TOOLS
 void		ft_putstr(char *str);
@@ -54,5 +53,5 @@ int			ft_atoi(char *str);
 
 // LAUNCH THREADS
 
-int		launch_threads(t_vars *global_var);
+int		launch_threads(t_vars *global_var, int number_phil);
 #endif

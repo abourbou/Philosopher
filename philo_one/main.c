@@ -53,7 +53,7 @@ int		init_glob(t_vars *glob_var, int argc, char **argv)
 	}
 	glob_var->stop = 0;
 	if (glob_var->number_phil > 0)
-		glob_var->size_tab_kit = sizeof(t_phil_kit*) * (glob_var->number_phil + 1);
+		glob_var->size_arr_kit = sizeof(t_phil_kit*) * (glob_var->number_phil + 1);
 	return (verif_glob(glob_var, argc));
 }
 
@@ -77,9 +77,9 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	printf("initialization successfull\n");
-	 if (!launch_threads(&glob_var))
-	 	ft_putstr("Malloc error\n");
+	if (!launch_threads(&glob_var, glob_var.number_phil))
+		ft_putstr("Malloc error\n");
 	else
-		printf("Successfull end of the threads, program fnished\n");
+		printf("Successfull end of the threads, program finished\n");
 	return (0);
 }

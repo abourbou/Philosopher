@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 17:02:58 by abourbou          #+#    #+#             */
-/*   Updated: 2020/12/08 09:57:06 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2020/12/23 20:12:14 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*thread_function(void *vkit)
 **	return 1 if success or 0 if fail
 */
 
-int		launch_thread(t_args *args, t_mutex *mutex)
+int		launch_threads(t_args *args, t_mutex *mutex)
 {
 	int			i;
 	pthread_t	*tab_thread;
