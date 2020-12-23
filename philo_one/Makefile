@@ -1,52 +1,36 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/12/04 12:09:13 by abourbou          #+#    #+#              #
-#    Updated: 2020/12/04 17:31:26 by abourbou         ###   ########lyon.fr    #
-#                                                                              #
-# **************************************************************************** #
 
-NAME				=	philo_one
+NAME		=	philo_one
 
-#PATH
-PATH_SRC			=	srcs
+CC			=	gcc
 
-PATH_INC			=	include
+FLAGS		=	-Wall -Werror -Wextra
 
-#NAME OF FILES
-SRC_NAME			=	tools.c init.c launch_thread.c
+SRC			=	$(addprefix $(SRC_PATH)/,$(SOURCE)) main.c
 
-INC_NAME			=	philo.h
+SRC_PATH	=	src
 
-#PATH + NAMES
+SOURCE		=	tools.c
 
-SRC					=	$(addprefix $(PATH_SRC)/, $(SRC_NAME)) main.c
+HEADER		=	$(addprefix $(INC_PATH)/,$(INCLUDE))
 
-INC					=	$(addprefix $(PATH_INC)/, $(INC_NAME))
+INCLUDE		=	philo_one.h
 
-OBJ					= 	$(SRC:.c=.o)
+INC_PATH	=	headers
 
-#COMPILATION PARAMETERS
+OBJ			=	$(SRC:.c=.o)
 
-CC					=	gcc
+all			:	$(NAME)
 
-CFLAGS				= -Wall -Werror -Wextra
+$(NAME)		:	$(OBJ)
+				$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lpthread
 
-#RULES
+%.o			:	%.c $(HEADER)
+				$(CC) $(FLAGS) -c $< -o $@
 
-all					:	$(NAME)
+clean		:
+				rm -rf $(OBJ) main.o
 
-$(NAME)				:	$(OBJ) $(INCLUDE)
-						@$(CC) -o $@ $(CFLAGS) $(OBJ)
+fclean		:	clean
+				rm -f $(NAME)
 
-%.o					:	%.c . $(INCLUDE)
-						@$(CC) -c $< -I$(PATH_INC) -o $@ $(CFLAGS)
-
-fclean				:
-						rm -f $(OBJ)
-
-re					:	fclean all
+re			:	fclean all
