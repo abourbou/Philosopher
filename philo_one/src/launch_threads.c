@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 10:42:10 by abourbou          #+#    #+#             */
-/*   Updated: 2020/12/24 15:05:03 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2020/12/24 15:26:51 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ void	*start_pthread(void *vkit)
 
 
 	kit = vkit;
+	pthread_mutex_lock(&(kit->vars->lmutex->m_speak));
 	printf("thread number : %d starts\n", kit->my_number);
+	pthread_mutex_unlock(&(kit->vars->lmutex->m_speak));
 	printf("thread number : %d ends\n", kit->my_number);
 	return (0);
 }
@@ -91,6 +93,6 @@ int		launch_threads(t_vars *global_var, int number_phil)
 	}
 	destroy_arr_kit(arr_kit);
 	free(arr_thread);
-	
+	destroy_glob(global_var);
 	return (1);
 }

@@ -43,7 +43,7 @@ typedef struct	s_vars
 	int				time_to_sleep;
 	int				max_meal;
 	int				*compt_meal;
-	t_lmutex		lmutex;
+	t_lmutex		*lmutex;
 	int				stop;
 	unsigned long	size_arr_kit;
 }				t_vars;
@@ -56,10 +56,13 @@ typedef struct	s_phil_kit
 }				t_phil_kit;
 
 // TOOLS
-void		ft_putstr(char *str);
-int			ft_atoi(char *str);
+void	ft_putstr(char *str);
+int		ft_atoi(char *str);
 
 // LAUNCH THREADS
-
 int		launch_threads(t_vars *global_var, int number_phil);
+
+// MANAGEMENT_VAR
+int		init_glob(t_vars *glob_var, int argc, char **argv);
+void	destroy_glob(t_vars *glob_var);
 #endif
