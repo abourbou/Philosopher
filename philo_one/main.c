@@ -22,6 +22,23 @@ int		verif_glob(t_vars *glob_var, int argc)
 	return (1);
 }
 
+int		init_mutex(t_vars *glob_var, int number_phil)
+{
+	t_lmutex	*lstmutex;
+	int			i;
+
+	lstmutex = &(glob_var->lmutex);
+	if (!(lstmutex->m_fork = malloc(sizeof(pthread_mutex_t) * number_phil)))
+		return (0);
+	i = 0;
+	while (i < number_phil)
+	{
+		pthread_mutex_init(&(lstmutex->m_fork[i]), NULL);
+		i++;
+	}
+	return (1);	
+}
+
 /*
 **	return 1 if it is a success
 **	return 0 if malloc error
@@ -30,31 +47,27 @@ int		verif_glob(t_vars *glob_var, int argc)
 
 int		init_glob(t_vars *glob_var, int argc, char **argv)
 {
-	int i;
-
 	glob_var->number_phil = ft_atoi(argv[1]);
 	glob_var->time_to_die = ft_atoi(argv[2]);
 	glob_var->time_to_eat = ft_atoi(argv[3]);
 	glob_var->time_to_sleep = ft_atoi(argv[4]);
 	glob_var->max_meal = (argc == 6) ? ft_atoi(argv[5]) : -1;
 	glob_var->compt_meal = 0;
+	if (verif_glob(glob_var, argc) != 1)
+		return (-1);
 	if (argc == 6)
 	{
-		i = 0;
 		if ((glob_var->compt_meal = malloc(sizeof(int) * 
 		(glob_var->number_phil + 1))) == 0)
 			return (0);
-		while (i < glob_var->number_phil)
-		{
-			glob_var->compt_meal[i] = 0;
-			i++;
-		}
-		glob_var->compt_meal[i] = -1;
+		memset(glob_var->compt_meal, 0, glob_var->number_phil * sizeof(int));
+		glob_var->compt_meal[glob_var->number_phil] = -1;
 	}
 	glob_var->stop = 0;
-	if (glob_var->number_phil > 0)
-		glob_var->size_arr_kit = sizeof(t_phil_kit*) * (glob_var->number_phil + 1);
-	return (verif_glob(glob_var, argc));
+	glob_var->size_arr_kit = sizeof(t_phil_kit*) * (glob_var->number_phil + 1);
+	if (!(init_mutex(glob_var, glob_var->number_phil)))
+		return (0);
+	return (1);
 }
 
 int		main(int argc, char **argv)

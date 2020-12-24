@@ -28,6 +28,13 @@
 // compt_meal est un tableau qui compte 
 // le nombre de repas de chaque philosophe
 
+typedef struct	s_lmutex
+{
+	pthread_mutex_t		*m_fork;
+	pthread_mutex_t		m_speak;
+	pthread_mutex_t		m_compt_meal;
+}				t_lmutex;
+
 typedef struct	s_vars
 {
 	int				number_phil;
@@ -36,6 +43,7 @@ typedef struct	s_vars
 	int				time_to_sleep;
 	int				max_meal;
 	int				*compt_meal;
+	t_lmutex		lmutex;
 	int				stop;
 	unsigned long	size_arr_kit;
 }				t_vars;

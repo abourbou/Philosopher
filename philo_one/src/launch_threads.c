@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 10:42:10 by abourbou          #+#    #+#             */
-/*   Updated: 2020/12/23 20:43:21 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2020/12/24 15:05:03 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int		launch_threads(t_vars *global_var, int number_phil)
 	while (i < number_phil)
 	{
 		pthread_create(&arr_thread[i], 0, start_pthread, arr_kit[i]);
+		sleep(0);
 		i++;
 	}
 	i = 0;
@@ -90,5 +91,6 @@ int		launch_threads(t_vars *global_var, int number_phil)
 	}
 	destroy_arr_kit(arr_kit);
 	free(arr_thread);
+	
 	return (1);
 }
