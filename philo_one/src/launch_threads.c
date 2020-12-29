@@ -6,24 +6,12 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 10:42:10 by abourbou          #+#    #+#             */
-/*   Updated: 2020/12/24 15:26:51 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2020/12/29 15:23:18 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void	*start_pthread(void *vkit)
-{
-	t_phil_kit	*kit;
-
-
-	kit = vkit;
-	pthread_mutex_lock(&(kit->vars->lmutex->m_speak));
-	printf("thread number : %d starts\n", kit->my_number);
-	pthread_mutex_unlock(&(kit->vars->lmutex->m_speak));
-	printf("thread number : %d ends\n", kit->my_number);
-	return (0);
-}
 
 void	destroy_arr_kit(t_phil_kit **tab_kit)
 {

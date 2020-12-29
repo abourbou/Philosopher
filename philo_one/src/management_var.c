@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2020/12/24 15:25:38 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2020/12/29 15:42:59 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static int		init_mutex(t_vars *glob_var, int number_phil)
 		pthread_mutex_init(&(lstmutex->m_fork[i]), NULL);
 		i++;
 	}
+	pthread_mutex_init(&(lstmutex->m_compt_meal), NULL);
+	pthread_mutex_init(&(lstmutex->m_speak), NULL);
 	return (1);	
 }
 
@@ -68,17 +70,31 @@ int				init_glob(t_vars *glob_var, int argc, char **argv)
 		memset(glob_var->compt_meal, 0, glob_var->number_phil * sizeof(int));
 		glob_var->compt_meal[glob_var->number_phil] = -1;
 	}
-	glob_var->stop = 0;
-	glob_var->size_arr_kit = sizeof(t_phil_kit*) * (glob_var->number_phil + 1);
 	if (!(init_mutex(glob_var, glob_var->number_phil)))
 		return (0);
+	glob_var->size_arr_kit = sizeof(t_phil_kit*) * (glob_var->number_phil + 1);
+	glob_var->stop = 0;
+	glob_var->start_time = get_time(0);
 	return (1);
 }
 
-void		destroy_glob(t_vars *glob_var)
+void	destroy_glob(t_vars *glob_var)
 {
+	int		i;
+
+	i = 0;
 	if (glob_var->compt_meal)
 		free(glob_var->compt_meal);
+	while (i < glob_var->number_phil)
+	{
+		if (pthread_mutex_destroy(&(glob_var->lmutex->m_fork[i])))
+			ft_putstr("impossible to destroy lock mutex in m_fork\n");
+		i++;
+	}
+	if (pthread_mutex_destroy(&(glob_var->lmutex->m_compt_meal)))
+		ft_putstr("impossible to destroy lock mutex in m_compt_meal\n");
+	if (pthread_mutex_destroy(&(glob_var->lmutex->m_speak)))
+		ft_putstr("impossible to destroy lock mutex in m_speak\n");
 	free((glob_var->lmutex)->m_fork);
 	free(glob_var->lmutex);
 }

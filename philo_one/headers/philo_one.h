@@ -37,15 +37,16 @@ typedef struct	s_lmutex
 
 typedef struct	s_vars
 {
-	int				number_phil;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				max_meal;
-	int				*compt_meal;
+	long			number_phil;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
+	long			max_meal;
+	long			*compt_meal;
 	t_lmutex		*lmutex;
 	int				stop;
 	unsigned long	size_arr_kit;
+	long			start_time;
 }				t_vars;
 
 typedef struct	s_phil_kit
@@ -57,7 +58,8 @@ typedef struct	s_phil_kit
 
 // TOOLS
 void	ft_putstr(char *str);
-int		ft_atoi(char *str);
+long	ft_atoi(char *str);
+long	get_time(long start_time);
 
 // LAUNCH THREADS
 int		launch_threads(t_vars *global_var, int number_phil);
@@ -65,4 +67,8 @@ int		launch_threads(t_vars *global_var, int number_phil);
 // MANAGEMENT_VAR
 int		init_glob(t_vars *glob_var, int argc, char **argv);
 void	destroy_glob(t_vars *glob_var);
+
+// CYCLE_THREAD
+void	*start_pthread(void *vkit);
+
 #endif

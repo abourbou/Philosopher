@@ -9,7 +9,7 @@ SRC			=	$(addprefix $(SRC_PATH)/,$(SOURCE)) main.c
 
 SRC_PATH	=	src
 
-SOURCE		=	tools.c launch_threads.c management_var.c
+SOURCE		=	tools.c launch_threads.c management_var.c cycle_thread.c
 
 HEADER		=	$(addprefix $(INC_PATH)/,$(INCLUDE))
 

@@ -22,18 +22,29 @@ void		ft_putstr(char *str)
 	write(1, str, i);
 }
 
-int		ft_atoi(char *str)
+long	ft_atoi(char *str)
 {
-	int i;
-	int number;
+	int		i;
+	long	number;
 
 	i = 0;
 	number = 0;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		number = number * 10;
-		number += (int)(str[i] - '0');
+		number += (long)(str[i] - '0');
 		i++;
 	}
 	return (number);
+}
+
+long	get_time(long start_time)
+{
+	struct timeval	scurrent_time;
+	long	current_time;
+
+	gettimeofday(&scurrent_time, NULL);
+	current_time = scurrent_time.tv_sec * 1000;
+	current_time += scurrent_time.tv_usec;
+	return (current_time - start_time);
 }
