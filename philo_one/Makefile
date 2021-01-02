@@ -28,7 +28,7 @@ $(NAME)		:	$(OBJ)
 				$(CC) $(FLAGS) -I headers -c $< -o $@
 
 clean		:
-				rm -rf $(OBJ) main.o
+				rm -rf $(OBJ)
 
 fclean		:	clean
 				rm -f $(NAME)
