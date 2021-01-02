@@ -36,5 +36,7 @@ int		main(int argc, char **argv)
 		ft_putstr("Malloc error\n");
 	else
 		printf("Successfull end of the threads, program finished\n");
+
+	printf("itoa ret : %s\n", ft_itoa(-9223372036854775807));
 	return (0);
 }

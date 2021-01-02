@@ -46,7 +46,6 @@ typedef struct	s_vars
 	t_lmutex		*lmutex;
 	int				stop;
 	unsigned long	size_arr_kit;
-	long			start_time;
 }				t_vars;
 
 typedef struct	s_phil_kit
@@ -59,7 +58,8 @@ typedef struct	s_phil_kit
 // TOOLS
 void	ft_putstr(char *str);
 long	ft_atoi(char *str);
-long	get_time(long start_time);
+long	get_time(void);
+char	*ft_itoa(long number);
 
 // LAUNCH THREADS
 int		launch_threads(t_vars *global_var, int number_phil);

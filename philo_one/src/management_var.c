@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2020/12/29 15:42:59 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/02 11:13:14 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int				init_glob(t_vars *glob_var, int argc, char **argv)
 		return (0);
 	glob_var->size_arr_kit = sizeof(t_phil_kit*) * (glob_var->number_phil + 1);
 	glob_var->stop = 0;
-	glob_var->start_time = get_time(0);
+	get_time();
 	return (1);
 }
 

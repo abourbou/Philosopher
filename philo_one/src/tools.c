@@ -38,11 +38,70 @@ long	ft_atoi(char *str)
 	return (number);
 }
 
-long	get_time(long start_time)
+static char	*reverse_str(char *str, unsigned long size)
+{
+	char	*rev_str;
+	long	i;
+	long	j;
+
+	i = 0;
+	j = 0;
+	if (!(rev_str = malloc(sizeof(char) * size)))
+		return (0);
+	memset(rev_str, 0, sizeof(char) * size);
+	while (str[j] && j < (long)size)
+		j++;
+	j--;
+	while (j >= 0)
+	{
+		rev_str[i] = str[j];
+		i++;
+		j--;
+	}
+	return (rev_str);
+}
+
+char	*ft_itoa(long number)
+{
+	char			*str;
+	char			*buffer;
+	int				i;
+	long			remainder;
+	unsigned long	unumber;
+	int				is_negat;
+
+	if (!(buffer = malloc(21 * sizeof(char))))
+		return (0);
+	memset(buffer, 0, 21 * sizeof(char));
+	i = 0;
+	unumber = (number < 0) ? -number : number;
+	is_negat = (number < 0) ? 1 : 0;
+	while (unumber)
+	{
+		remainder = unumber % 10;
+		unumber = unumber / 10;
+		buffer[i] = (char)remainder + '0';
+		i++;
+	}
+	buffer[i] = (is_negat) ? '-' : 0;
+	str = reverse_str(buffer, 21 * sizeof(char));
+	free(buffer);
+	return (str);
+}
+
+long	get_time(void)
 {
 	struct timeval	scurrent_time;
-	long	current_time;
+	long			current_time;
+	static	long	start_time;
 
+	if (!start_time)
+	{
+		gettimeofday(&scurrent_time, NULL);
+		start_time = scurrent_time.tv_sec * 1000;
+		start_time += scurrent_time.tv_usec;
+		return (0);
+	}
 	gettimeofday(&scurrent_time, NULL);
 	current_time = scurrent_time.tv_sec * 1000;
 	current_time += scurrent_time.tv_usec;
