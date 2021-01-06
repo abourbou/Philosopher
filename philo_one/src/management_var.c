@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/02 11:13:14 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/02 22:38:22 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,20 @@
 //return 1 if no error else return 0
 static int		verif_glob(t_vars *glob_var, int argc)
 {
-	if (glob_var->number_phil <= 0 || glob_var->time_to_die <= 0
+	if (glob_var->number_phil <= 1 || glob_var->time_to_die <= 0
 		|| glob_var->time_to_eat <= 0 || glob_var->time_to_sleep <= 0
 		|| (argc == 6 && glob_var->max_meal <= 0))
 		return (-1);
 	return (1);
 }
 
-static int		init_mutex(t_vars *glob_var, int number_phil)
+int		init_mutex(int number_phil)
 {
 	t_lmutex	*lstmutex;
 	int			i;
 
-	if (!(glob_var->lmutex = malloc(sizeof(t_lmutex))))
+	if (!(lstmutex = malloc(sizeof(t_lmutex))))
 		return (0);
-	lstmutex = glob_var->lmutex;
 	if (!(lstmutex->m_fork = malloc(sizeof(pthread_mutex_t) * number_phil)))
 	{
 		free(lstmutex);
@@ -41,9 +40,9 @@ static int		init_mutex(t_vars *glob_var, int number_phil)
 		pthread_mutex_init(&(lstmutex->m_fork[i]), NULL);
 		i++;
 	}
-	pthread_mutex_init(&(lstmutex->m_compt_meal), NULL);
 	pthread_mutex_init(&(lstmutex->m_speak), NULL);
-	return (1);	
+	pthread_mutex_init(&(lstmutex->m_meal), NULL);
+	return (lstmutex);
 }
 
 /*
@@ -70,11 +69,10 @@ int				init_glob(t_vars *glob_var, int argc, char **argv)
 		memset(glob_var->compt_meal, 0, glob_var->number_phil * sizeof(int));
 		glob_var->compt_meal[glob_var->number_phil] = -1;
 	}
-	if (!(init_mutex(glob_var, glob_var->number_phil)))
-		return (0);
+	glob_var->last_meal = 0;
+	glob_var->start_time = 0;
 	glob_var->size_arr_kit = sizeof(t_phil_kit*) * (glob_var->number_phil + 1);
 	glob_var->stop = 0;
-	get_time();
 	return (1);
 }
 

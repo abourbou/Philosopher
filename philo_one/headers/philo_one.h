@@ -30,9 +30,9 @@
 
 typedef struct	s_lmutex
 {
-	pthread_mutex_t		*m_fork;
-	pthread_mutex_t		m_speak;
-	pthread_mutex_t		m_compt_meal;
+	pthread_mutex_t	*m_fork;
+	pthread_mutex_t	m_speak;
+	pthread_mutex_t	m_meal;
 }				t_lmutex;
 
 typedef struct	s_vars
@@ -43,22 +43,24 @@ typedef struct	s_vars
 	long			time_to_sleep;
 	long			max_meal;
 	long			*compt_meal;
-	t_lmutex		*lmutex;
+	long			*last_meal;
+	long			*start_time;
 	int				stop;
 	unsigned long	size_arr_kit;
 }				t_vars;
 
 typedef struct	s_phil_kit
 {
-	t_vars	*vars;
-	int		my_number;
-	int		meal;
+	t_vars		*vars;
+	t_lmutex	*lmutex;
+	int			my_number;
+	int			meal;
 }				t_phil_kit;
 
 // TOOLS
 void	ft_putstr(char *str);
 long	ft_atoi(char *str);
-long	get_time(void);
+long	get_time(long);
 char	*ft_itoa(long number);
 
 // LAUNCH THREADS
@@ -66,7 +68,9 @@ int		launch_threads(t_vars *global_var, int number_phil);
 
 // MANAGEMENT_VAR
 int		init_glob(t_vars *glob_var, int argc, char **argv);
+int		init_mutex(int number_phil);
 void	destroy_glob(t_vars *glob_var);
+
 
 // CYCLE_THREAD
 void	*start_pthread(void *vkit);

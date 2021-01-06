@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 10:42:10 by abourbou          #+#    #+#             */
-/*   Updated: 2020/12/29 15:23:18 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/02 22:37:16 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,17 @@ static t_phil_kit	**init_arr_kit(int number, unsigned long size_arr_kit, t_vars 
 {
 	t_phil_kit	**arr_kit;
 	t_phil_kit	*kit;
+	t_lmutex	*lmutex;
 
 	int	i;
 
 	if (!(arr_kit = malloc(size_arr_kit)))
 		return (0);
+	if (!(lmutex = init_mutex(number)))
+	{
+		free(arr_kit);
+		return (0);
+	}
 	memset(arr_kit, 0, size_arr_kit);
 	i = 0;
 	while (i < number)
