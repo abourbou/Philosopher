@@ -9,7 +9,7 @@ SRC			=	$(addprefix $(SRC_PATH)/,$(SOURCE)) main.c
 
 SRC_PATH	=	src
 
-SOURCE		=	tools.c launch_threads.c management_var.c cycle_thread.c
+SOURCE		=	tools.c launch_threads.c management_var.c cycle_thread.c monitoring_threads.c
 
 HEADER		=	$(addprefix $(INC_PATH)/,$(INCLUDE))
 
@@ -24,6 +24,9 @@ all			:	$(NAME)
 $(NAME)		:	$(OBJ)
 				$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lpthread
 
+debug		:	$(OBJ)
+				$(CC) -g3 -fsanitize=address $(FLAGS) $(OBJ) -o debug -lpthread
+					
 %.o			:	%.c $(HEADER)
 				$(CC) $(FLAGS) -I headers -c $< -o $@
 
@@ -32,5 +35,5 @@ clean		:
 
 fclean		:	clean
 				rm -f $(NAME)
-
+				rm -f debug
 re			:	fclean all

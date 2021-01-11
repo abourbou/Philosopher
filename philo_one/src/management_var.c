@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/02 22:38:22 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/11 11:16:07 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int		verif_glob(t_vars *glob_var, int argc)
 	return (1);
 }
 
-int		init_mutex(int number_phil)
+t_lmutex	*init_mutex(int number_phil)
 {
 	t_lmutex	*lstmutex;
 	int			i;
@@ -45,13 +45,7 @@ int		init_mutex(int number_phil)
 	return (lstmutex);
 }
 
-/*
-**	return 1 if it is a success
-**	return 0 if malloc error
-**	return -1 if bad variables
-*/
-
-int				init_glob(t_vars *glob_var, int argc, char **argv)
+static void	init_fix_glob(t_vars *glob_var, int argc, char **argv)
 {
 	glob_var->number_phil = ft_atoi(argv[1]);
 	glob_var->time_to_die = ft_atoi(argv[2]);
@@ -59,8 +53,32 @@ int				init_glob(t_vars *glob_var, int argc, char **argv)
 	glob_var->time_to_sleep = ft_atoi(argv[4]);
 	glob_var->max_meal = (argc == 6) ? ft_atoi(argv[5]) : -1;
 	glob_var->compt_meal = 0;
+	glob_var->stop = 0;
+	glob_var->compt_meal = 0;
+	glob_var->last_meal = 0;
+	glob_var->start_time = 0;
+}
+
+/*
+**	return 1 if it is a success
+**	return 0 if malloc error
+**	return -1 if bad variables
+*/
+
+int				init_glob(t_vars **pglob_var, int argc, char **argv)
+{
+	t_vars	*glob_var;
+
+	if (!(glob_var = malloc(sizeof(t_vars))))
+		return (0);
+	*pglob_var = glob_var;
+	init_fix_glob(glob_var, argc, argv);
 	if (verif_glob(glob_var, argc) != 1)
 		return (-1);
+	if (!(glob_var->last_meal = malloc(sizeof(long) * glob_var->number_phil)))
+		return (0);
+	if (!(glob_var->start_time = malloc(sizeof(long) * glob_var->number_phil)))
+		return (0);
 	if (argc == 6)
 	{
 		if ((glob_var->compt_meal = malloc(sizeof(int) * 
@@ -69,30 +87,36 @@ int				init_glob(t_vars *glob_var, int argc, char **argv)
 		memset(glob_var->compt_meal, 0, glob_var->number_phil * sizeof(int));
 		glob_var->compt_meal[glob_var->number_phil] = -1;
 	}
-	glob_var->last_meal = 0;
-	glob_var->start_time = 0;
-	glob_var->size_arr_kit = sizeof(t_phil_kit*) * (glob_var->number_phil + 1);
-	glob_var->stop = 0;
 	return (1);
 }
 
-void	destroy_glob(t_vars *glob_var)
+void	destroy_glob(t_vars *glob_var, t_lmutex *lmutex)
 {
 	int		i;
 
-	i = 0;
+	i = 0;	
+	if (!glob_var)
+		return ;
 	if (glob_var->compt_meal)
 		free(glob_var->compt_meal);
-	while (i < glob_var->number_phil)
+	if (glob_var->last_meal)
+		free(glob_var->last_meal);
+	if (glob_var->start_time)
+		free(glob_var->start_time);
+	if (lmutex)
 	{
-		if (pthread_mutex_destroy(&(glob_var->lmutex->m_fork[i])))
-			ft_putstr("impossible to destroy lock mutex in m_fork\n");
-		i++;
+		while (i < glob_var->number_phil)
+		{
+			if (pthread_mutex_destroy(&(lmutex->m_fork[i])))
+				ft_putstr("impossible to destroy lock mutex in m_fork\n");
+			i++;
+		}
+		if (pthread_mutex_destroy(&(lmutex->m_meal)))
+			ft_putstr("impossible to destroy lock mutex in m_compt_meal\n");
+		if (pthread_mutex_destroy(&(lmutex->m_speak)))
+			ft_putstr("impossible to destroy lock mutex in m_speak\n");
+		free((lmutex)->m_fork);
+		free(lmutex);
 	}
-	if (pthread_mutex_destroy(&(glob_var->lmutex->m_compt_meal)))
-		ft_putstr("impossible to destroy lock mutex in m_compt_meal\n");
-	if (pthread_mutex_destroy(&(glob_var->lmutex->m_speak)))
-		ft_putstr("impossible to destroy lock mutex in m_speak\n");
-	free((glob_var->lmutex)->m_fork);
-	free(glob_var->lmutex);
+	free(glob_var);
 }

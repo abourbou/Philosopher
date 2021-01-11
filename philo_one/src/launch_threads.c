@@ -6,14 +6,14 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 10:42:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/02 22:37:16 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/11 11:44:37 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
 
-void	destroy_arr_kit(t_phil_kit **tab_kit)
+void	destroy_arr_kit(t_kit **tab_kit)
 {
 	int i;
 
@@ -26,59 +26,56 @@ void	destroy_arr_kit(t_phil_kit **tab_kit)
 	free(tab_kit);
 }
 
-static t_phil_kit	**init_arr_kit(int number, unsigned long size_arr_kit, t_vars *global_var)
+static t_kit	**init_arr_kit(int number_phil, t_vars *global_var, t_lmutex *lst_mutex)
 {
-	t_phil_kit	**arr_kit;
-	t_phil_kit	*kit;
-	t_lmutex	*lmutex;
+	t_kit	**arr_kit;
+	t_kit	*kit;
 
 	int	i;
 
-	if (!(arr_kit = malloc(size_arr_kit)))
+	if (!(arr_kit = malloc((global_var->number_phil + 1) * sizeof(t_kit))))
 		return (0);
-	if (!(lmutex = init_mutex(number)))
-	{
-		free(arr_kit);
-		return (0);
-	}
-	memset(arr_kit, 0, size_arr_kit);
+	memset(arr_kit, 0, (global_var->number_phil + 1) * sizeof(t_kit));
 	i = 0;
-	while (i < number)
+	while (i < number_phil)
 	{
-		if (!(kit = malloc(sizeof(t_phil_kit))))
+		if (!(kit = malloc(sizeof(t_kit))))
 		{	
 			destroy_arr_kit(arr_kit);
 			return (0);
 		}
 		arr_kit[i] = kit;
-		(arr_kit[i])->vars = global_var;
-		(arr_kit[i])->my_number = i;
-		(arr_kit[i])->meal = 0;
+		kit->vars = global_var;
+		kit->lmutex = lst_mutex;
+		kit->my_number = i;
+		kit->number_meal = 0;
 		i++;
 	}
 	return (arr_kit);
 }
 
-int		launch_threads(t_vars *global_var, int number_phil)
+int		launch_threads(t_vars *global_var, t_lmutex *lst_mutex, int number_phil)
 {
 	int			i;
-	t_phil_kit	**arr_kit;
+	t_kit		**arr_kit;
 	pthread_t	*arr_thread;
 
-	if (!(arr_kit = init_arr_kit(number_phil, global_var->size_arr_kit, global_var)))
+	if (!(arr_kit = init_arr_kit(number_phil, global_var, lst_mutex)))
 		return (0);
-	if (!(arr_thread = malloc(sizeof(pthread_t) * number_phil)))
+	if (!(arr_thread = malloc(sizeof(pthread_t) * (number_phil + 1))))
 	{
 		destroy_arr_kit(arr_kit);
 		return (0);
 	}
+	pthread_create(&arr_thread[number_phil + 1], 0, monitoring_threads, global_var);
 	i = 0;
 	while (i < number_phil)
 	{
 		pthread_create(&arr_thread[i], 0, start_pthread, arr_kit[i]);
-		sleep(0);
+		//sleep(1);
 		i++;
 	}
+	pthread_join(arr_thread[number_phil + 1], 0);
 	i = 0;
 	while (i < number_phil)
 	{
@@ -87,6 +84,5 @@ int		launch_threads(t_vars *global_var, int number_phil)
 	}
 	destroy_arr_kit(arr_kit);
 	free(arr_thread);
-	destroy_glob(global_var);
 	return (1);
 }

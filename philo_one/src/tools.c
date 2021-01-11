@@ -89,12 +89,12 @@ char	*ft_itoa(long number)
 	return (str);
 }
 
-long	get_time(long start_time)
+long	get_time(void)
 {
 	struct timeval	scurrent_time;
 	long			current_time;
 
 	gettimeofday(&scurrent_time, NULL);
 	current_time = scurrent_time.tv_sec * 1000 + scurrent_time.tv_usec;
-	return (current_time - start_time);
+	return (current_time);
 }

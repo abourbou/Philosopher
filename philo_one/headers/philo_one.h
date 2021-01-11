@@ -46,33 +46,35 @@ typedef struct	s_vars
 	long			*last_meal;
 	long			*start_time;
 	int				stop;
-	unsigned long	size_arr_kit;
 }				t_vars;
 
-typedef struct	s_phil_kit
+typedef struct	s_kit
 {
 	t_vars		*vars;
 	t_lmutex	*lmutex;
 	int			my_number;
-	int			meal;
-}				t_phil_kit;
+	int			number_meal;
+}				t_kit;
 
 // TOOLS
-void	ft_putstr(char *str);
-long	ft_atoi(char *str);
-long	get_time(long);
-char	*ft_itoa(long number);
+void		ft_putstr(char *str);
+long		ft_atoi(char *str);
+long		get_time(void);
+char		*ft_itoa(long number);
 
 // LAUNCH THREADS
-int		launch_threads(t_vars *global_var, int number_phil);
+int			launch_threads(t_vars *global_var, t_lmutex *lst_mutex, int number_phil);
 
 // MANAGEMENT_VAR
-int		init_glob(t_vars *glob_var, int argc, char **argv);
-int		init_mutex(int number_phil);
-void	destroy_glob(t_vars *glob_var);
+int			init_glob(t_vars **glob_var, int argc, char **argv);
+t_lmutex	*init_mutex(int number_phil);
+void		destroy_glob(t_vars *glob_var, t_lmutex *lmutex);
 
 
 // CYCLE_THREAD
-void	*start_pthread(void *vkit);
+void		*start_pthread(void *vkit);
+
+// MONITORING_THREADS
+void		*monitoring_threads(void *pglob_var);
 
 #endif
