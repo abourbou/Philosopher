@@ -31,7 +31,7 @@ int		main(int argc, char **argv)
 			ft_putstr("Malloc error in init_glob\n");
 		else
 			ft_putstr("Incorrect variable\n");
-		destroy_glob(glob_var, 0); 
+		destroy_glob(glob_var, 0);
 		return (0);
 	}
 	if (!(lst_mutex = init_mutex(glob_var->number_phil)))
@@ -40,11 +40,8 @@ int		main(int argc, char **argv)
 		destroy_glob(glob_var, 0);
 		return (0);
 	}
-	printf("initialization successfull\n");
 	if (!launch_threads(glob_var, lst_mutex, glob_var->number_phil))
 		ft_putstr("Malloc error\n");
-	else
-		printf("Successfull end of the threads, program finished\n");
 	destroy_glob(glob_var, lst_mutex);
 	return (0);
 }

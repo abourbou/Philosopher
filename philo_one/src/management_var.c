@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/11 11:16:07 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/12 14:56:26 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,25 @@ static int		verif_glob(t_vars *glob_var, int argc)
 	return (1);
 }
 
-t_lmutex	*init_mutex(int number_phil)
+t_lmutex	*init_mutex(long number_phil)
 {
 	t_lmutex	*lstmutex;
-	int			i;
+	long		i;
 
 	if (!(lstmutex = malloc(sizeof(t_lmutex))))
 		return (0);
-	if (!(lstmutex->m_fork = malloc(sizeof(pthread_mutex_t) * number_phil)))
+	memset((void *)lstmutex, 0, sizeof(lstmutex));
+	if (!(lstmutex->m_fork = malloc(sizeof(pthread_mutex_t) * number_phil)) ||
+		!(lstmutex->is_fork_lock = malloc(sizeof(long) * number_phil)))
 	{
+		if (lstmutex->m_fork)
+			free(lstmutex->m_fork);
+		if (lstmutex->is_fork_lock)
+			free(lstmutex->is_fork_lock);
 		free(lstmutex);
 		return (0);
 	}
+	memset(lstmutex->is_fork_lock, 0, sizeof(long) * number_phil);
 	i = 0;
 	while (i < number_phil)
 	{
@@ -77,14 +84,13 @@ int				init_glob(t_vars **pglob_var, int argc, char **argv)
 		return (-1);
 	if (!(glob_var->last_meal = malloc(sizeof(long) * glob_var->number_phil)))
 		return (0);
-	if (!(glob_var->start_time = malloc(sizeof(long) * glob_var->number_phil)))
-		return (0);
+	memset(glob_var->last_meal, 0, sizeof(long) * glob_var->number_phil);
 	if (argc == 6)
 	{
-		if ((glob_var->compt_meal = malloc(sizeof(int) * 
+		if ((glob_var->compt_meal = malloc(sizeof(long) *
 		(glob_var->number_phil + 1))) == 0)
 			return (0);
-		memset(glob_var->compt_meal, 0, glob_var->number_phil * sizeof(int));
+		memset(glob_var->compt_meal, 0, glob_var->number_phil * sizeof(long));
 		glob_var->compt_meal[glob_var->number_phil] = -1;
 	}
 	return (1);
@@ -94,15 +100,13 @@ void	destroy_glob(t_vars *glob_var, t_lmutex *lmutex)
 {
 	int		i;
 
-	i = 0;	
+	i = 0;
 	if (!glob_var)
 		return ;
 	if (glob_var->compt_meal)
 		free(glob_var->compt_meal);
 	if (glob_var->last_meal)
 		free(glob_var->last_meal);
-	if (glob_var->start_time)
-		free(glob_var->start_time);
 	if (lmutex)
 	{
 		while (i < glob_var->number_phil)
