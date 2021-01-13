@@ -25,6 +25,7 @@ $(NAME)		:	$(OBJ)
 				$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lpthread
 
 debug		:	$(OBJ)
+				make $(NAME)
 				$(CC) -g3 -fno-omit-frame-pointer -fsanitize=address $(FLAGS) $(OBJ) -o debug -lpthread
 
 %.o			:	%.c $(HEADER)

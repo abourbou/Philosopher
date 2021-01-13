@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 11:28:48 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/12 16:50:16 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/13 22:44:33 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,15 @@ int		is_dead(t_kit *kit)
 }
 
 void	*monitoring_threads(void *pkit)
-{
+{/*
 	t_kit *kit;
 
 	kit = pkit;
 	while (!is_dead(kit) && !is_maxmeal(kit->vars, kit->vars->max_meal))
 		usleep(1000);
 	kit->vars->stop = 1;
+	return (0);
+*/
+	(void)pkit;
 	return (0);
 }

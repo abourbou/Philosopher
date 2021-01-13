@@ -59,6 +59,7 @@ void		ft_putstr(char *str);
 long		ft_atoi(char *str);
 long		get_time(void);
 void		ft_putnbr(long nbr);
+long		sleep_with_one_eye(t_vars *glob_var, long time_sleep);
 
 // LAUNCH THREADS
 int			launch_threads(t_vars *global_var, t_lmutex *lst_mutex, long number_phil);

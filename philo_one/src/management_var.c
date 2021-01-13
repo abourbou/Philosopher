@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/12 14:56:26 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/13 22:19:35 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	destroy_glob(t_vars *glob_var, t_lmutex *lmutex)
 			ft_putstr("impossible to destroy lock mutex in m_compt_meal\n");
 		if (pthread_mutex_destroy(&(lmutex->m_speak)))
 			ft_putstr("impossible to destroy lock mutex in m_speak\n");
+		free(lmutex->is_fork_lock);
 		free((lmutex)->m_fork);
 		free(lmutex);
 	}

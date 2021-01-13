@@ -63,3 +63,18 @@ long	get_time(void)
 	current_time = scurrent_time.tv_sec * 1000000 + scurrent_time.tv_usec;
 	return (current_time);
 }
+
+long	sleep_with_one_eye(t_vars *glob_var, long time_sleep)
+{
+	long	start_time;
+	long	current_time;
+
+	start_time = get_time();
+	current_time = 0;
+	while (!glob_var->stop && current_time < time_sleep)
+	{
+		usleep (1000);
+		current_time = (get_time() - start_time) / 1000;
+	}
+	return (glob_var->stop);
+}

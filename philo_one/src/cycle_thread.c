@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/12 16:44:57 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/13 23:04:44 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ void	*cycle_thread(void *vkit)
 	take_fork(kit, kit->my_number, kit->vars->number_phil);
 	philo_eat(kit, kit->my_number);
 	philo_speak(kit, kit->vars->start_time, kit->my_number, "is sleeping");
-	usleep(kit->vars->time_to_sleep * 1000);
+	//usleep(kit->vars->time_to_sleep * 1000);
+	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_sleep))
+		return (0);
 	philo_speak(kit, kit->vars->start_time, kit->my_number, "is thinking");
 
 	return (0);
