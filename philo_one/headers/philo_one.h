@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 16:40:16 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/16 16:49:23 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/16 17:18:09 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,34 +53,34 @@ typedef struct	s_kit
 /*
 ** TOOLS
 */
-long		ft_atoi(char *str);
-long		get_time(void);
-void		ft_putstr(char *str);
-void		ft_putnbr(long nbr);
-long		sleep_with_one_eye(t_vars *glob_var, long time_sleep);
+long			ft_atoi(char *str);
+long			get_time(void);
+void			ft_putstr(char *str);
+void			ft_putnbr(long nbr);
+long			sleep_with_one_eye(t_vars *glob_var, long time_sleep);
 
 /*
 **LAUNCH THREADS
 */
-int			launch_threads(t_vars *global_var, t_lmutex *lst_mutex,
+int				launch_threads(t_vars *global_var, t_lmutex *lst_mutex,
 												long number_phil);
 
 /*
 ** MANAGEMENT_VAR
 */
-int			init_glob(t_vars **glob_var, int argc, char **argv);
-t_lmutex	*init_mutex(long number_phil);
-void		destroy_glob(t_vars *glob_var, t_lmutex *lmutex);
+int				init_glob(t_vars **glob_var, int argc, char **argv);
+t_lmutex		*init_mutex(long number_phil, int i);
+void			destroy_glob(t_vars *glob_var, t_lmutex *lmutex, int i);
 
 /*
 ** CYCLE_THREAD
 */
-void		*cycle_thread(void *vkit);
-void		philo_speak(t_kit *kit, long start_time, long my_number,
+void			*cycle_thread(void *vkit);
+void			philo_speak(t_kit *kit, long start_time, long my_number,
 													char *message);
 
 /*
 ** MONITORING_THREADS
 */
-void		*monitoring_threads(void *pkit);
+void			*monitoring_threads(void *pkit);
 #endif

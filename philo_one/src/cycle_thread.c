@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/16 16:33:29 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/16 17:01:12 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	take_fork(t_kit *kit, long my_number, long left_fork)
 	philo_speak(kit, kit->vars->start_time, my_number, "has taken a fork");
 }
 
-int	philo_eat(t_kit *kit, long my_number)
+int		philo_eat(t_kit *kit, long my_number)
 {
 	long	left_fork;
 
@@ -79,7 +79,8 @@ void	*cycle_thread(void *vkit)
 	pthread_mutex_lock(&(kit->lmutex->m_meal));
 	kit->vars->last_meal[kit->my_number] = get_time();
 	pthread_mutex_unlock(&(kit->lmutex->m_meal));
-	left_fork = (kit->my_number == 0) ? kit->vars->number_phil - 1 : kit->my_number - 1;
+	left_fork = (kit->my_number == 0) ? kit->vars->number_phil - 1 :
+												kit->my_number - 1;
 	while (!kit->vars->stop)
 	{
 		take_fork(kit, kit->my_number, left_fork);

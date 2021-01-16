@@ -6,26 +6,24 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/16 15:44:14 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/16 17:12:12 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-//return 1 if no error else return 0
-static int		verif_glob(t_vars *glob_var, int argc)
+static int	verif_glob(t_vars *glob_var, int argc)
 {
-	if ((glob_var->number_phil <= 1 || glob_var->number_phil > 1000) || glob_var->time_to_die <= 0
-		|| glob_var->time_to_eat <= 0 || glob_var->time_to_sleep <= 0
-		|| (argc == 6 && glob_var->max_meal <= 0))
+	if ((glob_var->number_phil <= 1 || glob_var->number_phil > 1000) ||
+		glob_var->time_to_die <= 0 || glob_var->time_to_eat <= 0 ||
+		glob_var->time_to_sleep <= 0 || (argc == 6 && glob_var->max_meal <= 0))
 		return (-1);
 	return (1);
 }
 
-t_lmutex	*init_mutex(long number_phil)
+t_lmutex	*init_mutex(long number_phil, int i)
 {
 	t_lmutex	*lstmutex;
-	long		i;
 
 	if (!(lstmutex = malloc(sizeof(t_lmutex))))
 		return (0);
@@ -72,7 +70,7 @@ static void	init_fix_glob(t_vars *glob_var, int argc, char **argv)
 **	return -1 if bad variables
 */
 
-int				init_glob(t_vars **pglob_var, int argc, char **argv)
+int			init_glob(t_vars **pglob_var, int argc, char **argv)
 {
 	t_vars	*glob_var;
 
@@ -96,11 +94,8 @@ int				init_glob(t_vars **pglob_var, int argc, char **argv)
 	return (1);
 }
 
-void	destroy_glob(t_vars *glob_var, t_lmutex *lmutex)
+void		destroy_glob(t_vars *glob_var, t_lmutex *lmutex, int i)
 {
-	int		i;
-
-	i = 0;
 	if (!glob_var)
 		return ;
 	if (glob_var->compt_meal)

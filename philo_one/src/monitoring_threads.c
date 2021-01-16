@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 11:28:48 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/16 14:31:01 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/16 17:15:35 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		is_maxmeal(t_vars *glob_var, long max_meal)
 		if (glob_var->compt_meal[i] < glob_var->max_meal)
 		{
 			is_over = 0;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -46,7 +46,8 @@ int		is_dead(t_kit *kit)
 			i++;
 		else
 		{
-			if (get_time() - kit->vars->last_meal[i] >= kit->vars->time_to_die * 1000)
+			if (get_time() - kit->vars->last_meal[i] >=
+						kit->vars->time_to_die * 1000)
 			{
 				philo_speak(kit, start_time, i, "died");
 				return (1);

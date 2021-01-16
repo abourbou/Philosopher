@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abourbou <abourbou@student.le-101.fr>      +#+  +:+       +#+        */
+/*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 10:39:11 by abourbou          #+#    #+#             */
-/*   Updated: 2020/08/20 10:39:11 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/16 17:16:09 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/philo_one.h"
 
-void		ft_putstr(char *str)
+void	ft_putstr(char *str)
 {
 	int		i;
 
@@ -73,7 +73,7 @@ long	sleep_with_one_eye(t_vars *glob_var, long time_sleep)
 	current_time = 0;
 	while (!glob_var->stop && current_time < time_sleep)
 	{
-		usleep (1000);
+		usleep(1000);
 		current_time = (get_time() - start_time) / 1000;
 	}
 	return (glob_var->stop);
