@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 11:28:48 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/13 22:44:33 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/16 14:31:01 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int		is_maxmeal(t_vars *glob_var, long max_meal)
 		i++;
 	}
 	return (is_over);
-	return (0);
 }
 
 int		is_dead(t_kit *kit)
@@ -43,26 +42,28 @@ int		is_dead(t_kit *kit)
 	start_time = kit->vars->start_time;
 	while (i < kit->vars->number_phil)
 	{
-		if (get_time() - kit->vars->last_meal[i] >= kit->vars->time_to_die * 1000)
+		if (kit->vars->last_meal[i] == 0)
+			i++;
+		else
 		{
-			philo_speak(kit, start_time, i, "died");
-			return (1);
+			if (get_time() - kit->vars->last_meal[i] >= kit->vars->time_to_die * 1000)
+			{
+				philo_speak(kit, start_time, i, "died");
+				return (1);
+			}
+			i++;
 		}
-		i++;
 	}
 	return (0);
 }
 
 void	*monitoring_threads(void *pkit)
-{/*
+{
 	t_kit *kit;
 
 	kit = pkit;
 	while (!is_dead(kit) && !is_maxmeal(kit->vars, kit->vars->max_meal))
 		usleep(1000);
 	kit->vars->stop = 1;
-	return (0);
-*/
-	(void)pkit;
 	return (0);
 }

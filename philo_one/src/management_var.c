@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/13 22:19:35 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/16 15:44:14 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //return 1 if no error else return 0
 static int		verif_glob(t_vars *glob_var, int argc)
 {
-	if (glob_var->number_phil <= 1 || glob_var->time_to_die <= 0
+	if ((glob_var->number_phil <= 1 || glob_var->number_phil > 1000) || glob_var->time_to_die <= 0
 		|| glob_var->time_to_eat <= 0 || glob_var->time_to_sleep <= 0
 		|| (argc == 6 && glob_var->max_meal <= 0))
 		return (-1);

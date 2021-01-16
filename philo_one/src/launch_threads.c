@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 10:42:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/13 22:50:46 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/16 16:18:49 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,14 @@ int		launch_threads(t_vars *global_var, t_lmutex *lst_mutex, long number_phil)
 	while (i < number_phil)
 	{
 		pthread_create(&arr_thread[i], 0, cycle_thread, arr_kit[i]);
-		i++;
+		i += 2;
+	}
+	usleep(1000);
+	i = 1;
+	while (i < number_phil)
+	{
+		pthread_create(&arr_thread[i], 0, cycle_thread, arr_kit[i]);
+		i += 2;
 	}
 	pthread_join(arr_thread[number_phil], 0);
 	i = 0;
