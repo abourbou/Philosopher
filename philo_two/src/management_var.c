@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/17 13:27:38 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/17 15:39:43 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,24 @@ t_lsem	*init_sem(long number_phil)
 	t_lsem	*lstsem;
 
 	if (!(lstsem = malloc(sizeof(t_lsem))))
+	{
+		ft_putstr("Malloc error\n");
 		return (0);
+	}
+	sem_unlink("fork");
+	sem_unlink("speak");
+	sem_unlink("meal");
 	lstsem->s_fork = sem_open("fork", O_CREAT, S_IRWXO, (int)number_phil);
 	lstsem->nbr_fork_available = number_phil;
 	lstsem->s_speak = sem_open("speak", O_CREAT, S_IRWXO, 1);
 	lstsem->s_meal = sem_open("meal", O_CREAT, S_IRWXO, 1);
+	if (lstsem->s_fork == SEM_FAILED || lstsem->s_meal == SEM_FAILED || lstsem->s_speak == SEM_FAILED)
+	{
+		ft_putstr("Sem_open error\n");
+		ft_putstr(strerror(errno));
+		free(lstsem);
+		return (0);
+	}
 	return (lstsem);
 }
 
@@ -78,7 +91,7 @@ int			init_glob(t_vars **pglob_var, int argc, char **argv)
 	return (1);
 }
 
-void		destroy_glob(t_vars *glob_var, t_lmutex *lmutex, int i)
+void		destroy_glob(t_vars *glob_var, t_lsem *lsem)
 {
 	if (!glob_var)
 		return ;
@@ -86,21 +99,12 @@ void		destroy_glob(t_vars *glob_var, t_lmutex *lmutex, int i)
 		free(glob_var->compt_meal);
 	if (glob_var->last_meal)
 		free(glob_var->last_meal);
-	if (lmutex)
+	if (lsem)
 	{
-		while (i < glob_var->number_phil)
-		{
-			if (pthread_mutex_destroy(&(lmutex->m_fork[i])))
-				ft_putstr("impossible to destroy lock mutex in m_fork\n");
-			i++;
-		}
-		if (pthread_mutex_destroy(&(lmutex->m_meal)))
-			ft_putstr("impossible to destroy lock mutex in m_compt_meal\n");
-		if (pthread_mutex_destroy(&(lmutex->m_speak)))
-			ft_putstr("impossible to destroy lock mutex in m_speak\n");
-		free(lmutex->is_fork_lock);
-		free((lmutex)->m_fork);
-		free(lmutex);
+		sem_unlink("fork");
+		sem_unlink("speak");
+		sem_unlink("meal");
+		free(lsem);
 	}
 	free(glob_var);
 }

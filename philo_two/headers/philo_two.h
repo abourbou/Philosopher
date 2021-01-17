@@ -24,6 +24,11 @@
 # include <sys/time.h>
 # include <sys/stat.h>
 
+//! erase to the end
+# include <stdio.h>
+# include <errno.h>
+//
+
 
 typedef struct	s_lsem
 {
@@ -57,8 +62,8 @@ typedef struct	s_vars
 typedef struct	s_kit
 {
 	t_vars		*vars;
-	t_lmutex	*lmutex;
-	t_lsem		*sem;
+	t_lmutex	*lst_mutex;
+	t_lsem		*l_sem;
 	long		my_number;
 	long		number_meal;
 }				t_kit;
@@ -75,7 +80,7 @@ long			sleep_with_one_eye(t_vars *glob_var, long time_sleep);
 /*
 **LAUNCH THREADS
 */
-int				launch_threads(t_vars *global_var, t_lmutex *lst_mutex,
+int				launch_threads(t_vars *global_var, t_lsem *lst_sem,
 												long number_phil);
 
 /*
@@ -83,7 +88,7 @@ int				launch_threads(t_vars *global_var, t_lmutex *lst_mutex,
 */
 int				init_glob(t_vars **glob_var, int argc, char **argv);
 t_lsem			*init_sem(long number_phil);
-void			destroy_glob(t_vars *glob_var, t_lmutex *lmutex, int i);
+void			destroy_glob(t_vars *glob_var, t_lsem *lsem);
 
 /*
 ** CYCLE_THREAD

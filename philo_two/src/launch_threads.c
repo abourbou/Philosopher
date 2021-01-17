@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 10:42:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/17 11:37:43 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/17 15:39:42 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void			destroy_arr_kit(t_kit **tab_kit)
 }
 
 static t_kit	**init_arr_kit(int number_phil, t_vars *global_var,
-												t_lmutex *lst_mutex)
+												t_lsem *lst_sem)
 {
 	t_kit	**arr_kit;
 	t_kit	*kit;
@@ -45,7 +45,7 @@ static t_kit	**init_arr_kit(int number_phil, t_vars *global_var,
 		}
 		arr_kit[i] = kit;
 		kit->vars = global_var;
-		kit->lmutex = lst_mutex;
+		kit->l_sem = lst_sem;
 		kit->my_number = i;
 		kit->number_meal = 0;
 		i++;
@@ -75,14 +75,14 @@ static void		create_threads(t_kit **arr_kit, pthread_t *arr_thread,
 	}
 }
 
-int				launch_threads(t_vars *global_var, t_lmutex *lst_mutex,
+int				launch_threads(t_vars *global_var, t_lsem *lst_sem,
 												long number_phil)
 {
 	int			i;
 	t_kit		**arr_kit;
 	pthread_t	*arr_thread;
 
-	if (!(arr_kit = init_arr_kit(number_phil, global_var, lst_mutex)))
+	if (!(arr_kit = init_arr_kit(number_phil, global_var, lst_sem)))
 		return (0);
 	if (!(arr_thread = malloc(sizeof(pthread_t) * (number_phil + 1))))
 	{
@@ -98,7 +98,6 @@ int				launch_threads(t_vars *global_var, t_lmutex *lst_mutex,
 		pthread_join(arr_thread[i], 0);
 		i++;
 	}
-	(void)i;
 	destroy_arr_kit(arr_kit);
 	free(arr_thread);
 	return (1);

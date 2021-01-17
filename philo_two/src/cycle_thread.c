@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/17 11:37:43 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/17 15:57:08 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void	philo_speak(t_kit *kit, long start_time, long my_number, char *message)
 {
-	pthread_mutex_t *speak;
-	long			current_time;
+	sem_t	*speak;
+	long	current_time;
 
-	speak = &kit->lmutex->m_speak;
+	speak = kit->l_sem->s_speak;
 	current_time = get_time() - start_time;
-	pthread_mutex_lock(speak);
+	sem_wait(speak);
 	if (kit->vars->stop)
 	{
-		pthread_mutex_unlock(speak);
+		sem_post(speak);
 		return ;
 	}
 	ft_putnbr(current_time / 1000);
@@ -31,63 +31,58 @@ void	philo_speak(t_kit *kit, long start_time, long my_number, char *message)
 	ft_putstr("    ");
 	ft_putstr(message);
 	ft_putstr("\n");
-	pthread_mutex_unlock(speak);
+	sem_post(speak);
 }
 
-void	take_fork(t_kit *kit, long my_number, long left_fork)
+void	take_fork(t_kit *kit, long my_number)
 {
-	while (kit->lmutex->is_fork_lock[my_number] && kit->vars->stop)
+	while (kit->l_sem->nbr_fork_available < 2 && kit->vars->stop)
 		sleep_with_one_eye(kit->vars, 1);
-	kit->lmutex->is_fork_lock[left_fork] = 1;
-	pthread_mutex_lock(&(kit->lmutex->m_fork[left_fork]));
+	sleep_with_one_eye(kit->vars, 1);
+	sem_wait(kit->l_sem->s_fork);
+	kit->l_sem->nbr_fork_available -= 1;
 	philo_speak(kit, kit->vars->start_time, my_number, "has taken a fork");
-	kit->lmutex->is_fork_lock[my_number] = 1;
-	pthread_mutex_lock(&(kit->lmutex->m_fork[my_number]));
+	sem_wait(kit->l_sem->s_fork);
+	kit->l_sem->nbr_fork_available -= 1;
 	philo_speak(kit, kit->vars->start_time, my_number, "has taken a fork");
 }
 
 int		philo_eat(t_kit *kit, long my_number)
 {
-	long	left_fork;
-
 	philo_speak(kit, kit->vars->start_time, my_number, "is eating");
-	pthread_mutex_lock(&kit->lmutex->m_meal);
+	sem_wait(kit->l_sem->s_meal);
 	kit->vars->last_meal[my_number] = get_time();
-	pthread_mutex_unlock(&kit->lmutex->m_meal);
+	sem_post(kit->l_sem->s_meal);
 	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_eat))
 		return (1);
 	if (kit->vars->max_meal > 0)
 	{
-		pthread_mutex_lock(&kit->lmutex->m_meal);
+		sem_wait(kit->l_sem->s_meal);
 		kit->vars->compt_meal[my_number] += 1;
-		pthread_mutex_unlock(&kit->lmutex->m_meal);
+		sem_post(kit->l_sem->s_meal);
 	}
-	left_fork = (my_number == 0) ? kit->vars->number_phil - 1 : my_number - 1;
-	kit->lmutex->is_fork_lock[left_fork] = 0;
-	pthread_mutex_unlock(&kit->lmutex->m_fork[left_fork]);
-	kit->lmutex->is_fork_lock[my_number] = 0;
-	pthread_mutex_unlock(&kit->lmutex->m_fork[my_number]);
+	sem_post(kit->l_sem->s_fork);
+	sem_post(kit->l_sem->s_fork);
+	kit->l_sem->nbr_fork_available += 2;
 	return (0);
 }
 
 void	*cycle_thread(void *vkit)
 {
 	t_kit	*kit;
-	long	left_fork;
 
 	kit = vkit;
-	pthread_mutex_lock(&(kit->lmutex->m_meal));
+	sem_wait(kit->l_sem->s_meal);
 	kit->vars->last_meal[kit->my_number] = get_time();
-	pthread_mutex_unlock(&(kit->lmutex->m_meal));
-	left_fork = (kit->my_number == 0) ? kit->vars->number_phil - 1 :
-												kit->my_number - 1;
+	sem_post(kit->l_sem->s_meal);
 	while (!kit->vars->stop)
 	{
-		take_fork(kit, kit->my_number, left_fork);
+		take_fork(kit, kit->my_number);
 		if (philo_eat(kit, kit->my_number))
 		{
-			pthread_mutex_unlock(&kit->lmutex->m_fork[left_fork]);
-			pthread_mutex_unlock(&kit->lmutex->m_fork[kit->my_number]);
+			sem_post(kit->l_sem->s_fork);
+			sem_post(kit->l_sem->s_fork);
+			kit->l_sem->nbr_fork_available += 2;
 			return (0);
 		}
 		philo_speak(kit, kit->vars->start_time, kit->my_number, "is sleeping");
