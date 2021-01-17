@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 10:42:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/16 17:06:27 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/17 16:08:27 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int				launch_threads(t_vars *global_var, t_lmutex *lst_mutex,
 		pthread_join(arr_thread[i], 0);
 		i++;
 	}
-	(void)i;
 	destroy_arr_kit(arr_kit);
 	free(arr_thread);
 	return (1);

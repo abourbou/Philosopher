@@ -38,13 +38,6 @@ typedef struct	s_lsem
 	sem_t	*s_meal;
 }				t_lsem;
 
-typedef struct	s_lmutex
-{
-	pthread_mutex_t	*m_fork;
-	long			*is_fork_lock;
-	pthread_mutex_t	m_speak;
-	pthread_mutex_t	m_meal;
-}				t_lmutex;
 
 typedef struct	s_vars
 {
@@ -62,7 +55,6 @@ typedef struct	s_vars
 typedef struct	s_kit
 {
 	t_vars		*vars;
-	t_lmutex	*lst_mutex;
 	t_lsem		*l_sem;
 	long		my_number;
 	long		number_meal;
