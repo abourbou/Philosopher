@@ -49,9 +49,9 @@ int				launch_forks(t_vars *global_var, t_lsem *lst_sem, long number_phil)
 	t_kit	kit;
 	int		status;
 
+	memset(&kit, 0, sizeof(kit));
 	kit.vars = global_var;
 	kit.l_sem = lst_sem;
-	kit.number_meal = 0;
 	if (!(tab_pid = malloc(sizeof(pid_t) * number_phil)))
 		return (0);
 	kit.vars->start_time = get_time();
@@ -76,8 +76,9 @@ int				launch_forks(t_vars *global_var, t_lsem *lst_sem, long number_phil)
 	{
 		pid_ret = waitpid(-1, &status, 0);
 		find_fork(tab_pid, number_phil, pid_ret);
-		if (status == 1)
+		if (status % 256 == 1)
 		{
+	
 			destroy_fork(tab_pid, number_phil);
 			break;
 		}
