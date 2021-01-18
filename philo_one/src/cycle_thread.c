@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/16 17:01:12 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/18 14:42:45 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ int		philo_eat(t_kit *kit, long my_number)
 	pthread_mutex_lock(&kit->lmutex->m_meal);
 	kit->vars->last_meal[my_number] = get_time();
 	pthread_mutex_unlock(&kit->lmutex->m_meal);
-	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_eat))
-		return (1);
 	if (kit->vars->max_meal > 0)
 	{
 		pthread_mutex_lock(&kit->lmutex->m_meal);
 		kit->vars->compt_meal[my_number] += 1;
 		pthread_mutex_unlock(&kit->lmutex->m_meal);
 	}
+	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_eat))
+		return (1);
 	left_fork = (my_number == 0) ? kit->vars->number_phil - 1 : my_number - 1;
 	kit->lmutex->is_fork_lock[left_fork] = 0;
 	pthread_mutex_unlock(&kit->lmutex->m_fork[left_fork]);

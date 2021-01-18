@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/17 15:57:08 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/18 14:44:06 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ int		philo_eat(t_kit *kit, long my_number)
 	sem_wait(kit->l_sem->s_meal);
 	kit->vars->last_meal[my_number] = get_time();
 	sem_post(kit->l_sem->s_meal);
-	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_eat))
-		return (1);
 	if (kit->vars->max_meal > 0)
 	{
 		sem_wait(kit->l_sem->s_meal);
 		kit->vars->compt_meal[my_number] += 1;
 		sem_post(kit->l_sem->s_meal);
 	}
+	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_eat))
+		return (1);
 	sem_post(kit->l_sem->s_fork);
 	sem_post(kit->l_sem->s_fork);
 	kit->l_sem->nbr_fork_available += 2;

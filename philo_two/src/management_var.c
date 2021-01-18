@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/17 15:39:43 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/18 15:23:38 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	verif_glob(t_vars *glob_var, int argc)
 	return (1);
 }
 
-t_lsem	*init_sem(long number_phil)
+t_lsem		*init_sem(long number_phil)
 {
 	t_lsem	*lstsem;
 
@@ -30,17 +30,17 @@ t_lsem	*init_sem(long number_phil)
 		ft_putstr("Malloc error\n");
 		return (0);
 	}
-	sem_unlink("fork");
-	sem_unlink("speak");
-	sem_unlink("meal");
-	lstsem->s_fork = sem_open("fork", O_CREAT, S_IRWXO, (int)number_phil);
+	sem_unlink("sem_fork");
+	sem_unlink("sem_speak");
+	sem_unlink("sem_meal");
+	lstsem->s_fork = sem_open("sem_fork", O_CREAT, 00777, (int)number_phil);
 	lstsem->nbr_fork_available = number_phil;
-	lstsem->s_speak = sem_open("speak", O_CREAT, S_IRWXO, 1);
-	lstsem->s_meal = sem_open("meal", O_CREAT, S_IRWXO, 1);
-	if (lstsem->s_fork == SEM_FAILED || lstsem->s_meal == SEM_FAILED || lstsem->s_speak == SEM_FAILED)
+	lstsem->s_speak = sem_open("sem_speak", O_CREAT, 00777, 1);
+	lstsem->s_meal = sem_open("sem_meal", O_CREAT, 00777, 1);
+	if (lstsem->s_fork == SEM_FAILED || lstsem->s_meal == SEM_FAILED
+									|| lstsem->s_speak == SEM_FAILED)
 	{
 		ft_putstr("Sem_open error\n");
-		ft_putstr(strerror(errno));
 		free(lstsem);
 		return (0);
 	}

@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/28 10:59:57 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/17 20:12:42 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/18 14:39:02 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ int			main(int argc, char **argv)
 	}
 	if (!launch_threads(glob_var, lst_sem, glob_var->number_phil))
 		ft_putstr("Malloc error\n");
-	destroy_glob(glob_var, lst_sem);	
+	destroy_glob(glob_var, lst_sem);
 	return (0);
 }

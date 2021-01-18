@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   .h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/16 16:40:16 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/16 17:18:09 by abourbou         ###   ########lyon.fr   */
+/*   Created: 2021/01/18 15:22:00 by abourbou          #+#    #+#             */
+/*   Updated: 2021/01/18 15:22:56 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _H
-# define _H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 
 # include <pthread.h>
 # include <semaphore.h>
@@ -24,12 +24,6 @@
 # include <sys/time.h>
 # include <sys/stat.h>
 
-//! erase to the end
-# include <stdio.h>
-# include <errno.h>
-//
-
-
 typedef struct	s_lsem
 {
 	sem_t	*s_fork;
@@ -37,7 +31,6 @@ typedef struct	s_lsem
 	sem_t	*s_speak;
 	sem_t	*s_meal;
 }				t_lsem;
-
 
 typedef struct	s_vars
 {
