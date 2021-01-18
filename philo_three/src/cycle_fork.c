@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cycle_thread.c                                     :+:      :+:    :+:   */
+/*   cycle_fork.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/17 21:40:53 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/18 22:41:31 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,58 +36,50 @@ void	philo_speak(t_kit *kit, long start_time, long my_number, char *message)
 
 void	take_fork(t_kit *kit, long my_number)
 {
-	while (kit->l_sem->nbr_fork_available < 2 && kit->vars->stop)
-		sleep_with_one_eye(kit->vars, 1);
-	sleep_with_one_eye(kit->vars, 1);
+	sem_wait(kit->l_sem->s_pair_fork);
 	sem_wait(kit->l_sem->s_fork);
-	kit->l_sem->nbr_fork_available -= 1;
 	philo_speak(kit, kit->vars->start_time, my_number, "has taken a fork");
 	sem_wait(kit->l_sem->s_fork);
-	kit->l_sem->nbr_fork_available -= 1;
 	philo_speak(kit, kit->vars->start_time, my_number, "has taken a fork");
 }
 
 int		philo_eat(t_kit *kit, long my_number)
 {
 	philo_speak(kit, kit->vars->start_time, my_number, "is eating");
-	sem_wait(kit->l_sem->s_meal);
-	kit->vars->last_meal[my_number] = get_time();
-	sem_post(kit->l_sem->s_meal);
-	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_eat))
+	kit->last_meal = get_time();
+	kit->number_meal++;
+	if (kit->vars->max_meal > 0 && kit->number_meal >= kit->vars->max_meal)	
 		return (1);
-	if (kit->vars->max_meal > 0)
-	{
-		sem_wait(kit->l_sem->s_meal);
-		kit->vars->compt_meal[my_number] += 1;
-		sem_post(kit->l_sem->s_meal);
-	}
+	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_eat))
+		return (2);
 	sem_post(kit->l_sem->s_fork);
 	sem_post(kit->l_sem->s_fork);
-	kit->l_sem->nbr_fork_available += 2;
+	sem_post(kit->l_sem->s_pair_fork);
 	return (0);
 }
 
-void	*cycle_thread(void *vkit)
+int		cycle_fork(void *vkit)
 {
-	t_kit	*kit;
+	t_kit		*kit;
+	pthread_t	monitoring_pthread;
+	int			return_val;
 
 	kit = vkit;
-	sem_wait(kit->l_sem->s_meal);
-	kit->vars->last_meal[kit->my_number] = get_time();
-	sem_post(kit->l_sem->s_meal);
-	while ()
+	pthread_create(&monitoring_pthread, 0, monitoring_fork, vkit);
+	kit->last_meal = get_time();
+	while (!kit->vars->stop)
 	{
 		take_fork(kit, kit->my_number);
-		if (philo_eat(kit, kit->my_number))
+		if ((return_val = philo_eat(kit, kit->my_number)))
 		{
 			sem_post(kit->l_sem->s_fork);
 			sem_post(kit->l_sem->s_fork);
-			kit->l_sem->nbr_fork_available += 2;
-			return (0);
+			sem_post(kit->l_sem->s_pair_fork);
+			return (return_val - 1);
 		}
 		philo_speak(kit, kit->vars->start_time, kit->my_number, "is sleeping");
 		if (sleep_with_one_eye(kit->vars, kit->vars->time_to_sleep))
-			return (0);
+			return (1);
 		philo_speak(kit, kit->vars->start_time, kit->my_number, "is thinking");
 	}
 	return (0);

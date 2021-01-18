@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 20:11:19 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/17 21:34:34 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/18 22:36:06 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@
 typedef struct	s_lsem
 {
 	sem_t	*s_fork;
-	long	nbr_fork_available;
+	sem_t	*s_pair_fork;
 	sem_t	*s_speak;
-	sem_t	*s_meal;
-	sem_t	*stop;
 }				t_lsem;
 
 
@@ -50,9 +48,8 @@ typedef struct	s_vars
 	long	time_to_eat;
 	long	time_to_sleep;
 	long	max_meal;
-	long	*compt_meal;
-	long	*last_meal;
 	long	start_time;
+	int		stop;
 }				t_vars;
 
 typedef struct	s_kit
@@ -61,6 +58,7 @@ typedef struct	s_kit
 	t_lsem		*l_sem;
 	long		my_number;
 	long		number_meal;
+	long		last_meal;
 }				t_kit;
 
 /*
@@ -73,9 +71,9 @@ void			ft_putnbr(long nbr);
 long			sleep_with_one_eye(t_vars *glob_var, long time_sleep);
 
 /*
-**LAUNCH THREADS
+**LAUNCH FORKS
 */
-int				launch_threads(t_vars *global_var, t_lsem *lst_sem,
+int				launch_forks(t_vars *global_var, t_lsem *lst_sem,
 												long number_phil);
 
 /*
@@ -86,14 +84,14 @@ t_lsem			*init_sem(long number_phil);
 void			destroy_glob(t_vars *glob_var, t_lsem *lsem);
 
 /*
-** CYCLE_THREAD
+** CYCLE_FORK
 */
-void			*cycle_thread(void *vkit);
+int				cycle_fork(void *vkit);
 void			philo_speak(t_kit *kit, long start_time, long my_number,
 													char *message);
 
 /*
-** MONITORING_THREADS
+** MONITORING_FORK
 */
-void			*monitoring_threads(void *pkit);
+void			*monitoring_fork(void *pkit);
 #endif

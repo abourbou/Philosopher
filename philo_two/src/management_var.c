@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/18 15:23:38 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/18 21:29:00 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,9 @@ void		destroy_glob(t_vars *glob_var, t_lsem *lsem)
 		free(glob_var->last_meal);
 	if (lsem)
 	{
-		sem_unlink("fork");
-		sem_unlink("speak");
-		sem_unlink("meal");
+		sem_unlink("sem_fork");
+		sem_unlink("sem_speak");
+		sem_unlink("sem_meal");
 		free(lsem);
 	}
 	free(glob_var);
