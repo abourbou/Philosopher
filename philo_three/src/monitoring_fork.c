@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 11:28:48 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/19 10:06:56 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 14:46:04 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*monitoring_fork(void *pkit)
 
 	kit = pkit;
 	elapse_time = 0;
-	while(kit->last_meal == 0)
+	while (kit->last_meal == 0)
 		usleep(1000);
 	while (elapse_time < kit->vars->time_to_die)
 	{

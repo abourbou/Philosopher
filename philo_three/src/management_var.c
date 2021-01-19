@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/19 10:03:22 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 14:48:02 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	verif_glob(t_vars *glob_var, int argc)
 	return (1);
 }
 
-t_lsem	*init_sem(long number_phil)
+t_lsem		*init_sem(long number_phil)
 {
 	t_lsem	*lstsem;
 
@@ -35,14 +35,14 @@ t_lsem	*init_sem(long number_phil)
 	sem_unlink("sem_speak");
 	sem_unlink("sem_stop");
 	lstsem->s_fork = sem_open("sem_fork", O_CREAT, 00777, (int)number_phil);
-	lstsem->s_pair_fork = sem_open("sem_pair_fork", O_CREAT, 00777, (int)(number_phil / 2));
+	lstsem->s_pair_fork = sem_open("sem_pair_fork", O_CREAT, 00777,
+												(int)(number_phil / 2));
 	lstsem->s_speak = sem_open("sem_speak", O_CREAT, 00777, 1);
 	lstsem->s_stop = sem_open("sem_stop", O_CREAT, 00777, 1);
 	if (lstsem->s_fork == SEM_FAILED || lstsem->s_pair_fork == SEM_FAILED
 	|| lstsem->s_speak == SEM_FAILED || lstsem->s_stop == SEM_FAILED)
 	{
-		ft_putstr("Sem_open error\n");
-		ft_putstr(strerror(errno));
+		ft_putstr("Error : sem_open failed\n");
 		free(lstsem);
 		return (0);
 	}
