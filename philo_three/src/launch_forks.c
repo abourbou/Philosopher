@@ -67,7 +67,8 @@ int				launch_forks(t_vars *global_var, t_lsem *lst_sem, long number_phil)
 		if (tab_pid[i] == 0)
 		{
 			kit.my_number = i;
-			return (cycle_fork(&kit));
+			cycle_fork(&kit);
+			exit(2);
 		}
 		i++;
 	}
@@ -75,12 +76,9 @@ int				launch_forks(t_vars *global_var, t_lsem *lst_sem, long number_phil)
 	while (i < number_phil)
 	{
 		pid_ret = waitpid(-1, &status, 0);
-		printf("pid : %d has stop with status : %d at time %ld\n",
-					(int)pid_ret, status % 256, (get_time() - kit.vars->start_time) / 1000);
 		find_fork(tab_pid, number_phil, pid_ret);
-		if (status % 256 == 1)
+		if (status % 255 == 1)
 		{
-	
 			destroy_fork(tab_pid, number_phil);
 			break;
 		}

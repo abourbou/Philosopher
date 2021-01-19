@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 20:11:19 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/19 08:47:45 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 10:02:46 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct	s_vars
 	long	time_to_sleep;
 	long	max_meal;
 	long	start_time;
-	int		stop;
 }				t_vars;
 
 typedef struct	s_kit

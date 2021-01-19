@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/19 08:37:05 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 10:03:22 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int			init_glob(t_vars **pglob_var, int argc, char **argv)
 	glob_var->time_to_sleep = ft_atoi(argv[4]);
 	glob_var->max_meal = (argc == 6) ? ft_atoi(argv[5]) : -1;
 	glob_var->start_time = 0;
-	glob_var->stop = 0;
 	if (verif_glob(glob_var, argc) != 1)
 		return (-1);
 	return (1);
