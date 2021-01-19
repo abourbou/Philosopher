@@ -1,0 +1,9 @@
+5 800 200 200
+5 800 200 200 7
+4 410 200 200
+4 310 200 100
+
+check one thread/fork per philosopher
+check if a mutex per fork / a sem for all forks
+check if their is a mutex/sem to protect a philosopher 
+	who die and start eating at the same time

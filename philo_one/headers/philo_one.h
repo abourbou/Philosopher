@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 16:40:16 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/16 17:18:09 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 20:06:43 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct	s_lmutex
 	long			*is_fork_lock;
 	pthread_mutex_t	m_speak;
 	pthread_mutex_t	m_meal;
+	pthread_mutex_t	m_eating;
 }				t_lmutex;
 
 typedef struct	s_vars
