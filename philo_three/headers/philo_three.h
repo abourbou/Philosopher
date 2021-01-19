@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 20:11:19 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/18 22:36:06 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 08:47:45 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct	s_lsem
 	sem_t	*s_fork;
 	sem_t	*s_pair_fork;
 	sem_t	*s_speak;
+	sem_t	*s_stop;
 }				t_lsem;
 
 
@@ -87,8 +88,7 @@ void			destroy_glob(t_vars *glob_var, t_lsem *lsem);
 ** CYCLE_FORK
 */
 int				cycle_fork(void *vkit);
-void			philo_speak(t_kit *kit, long start_time, long my_number,
-													char *message);
+void			philo_speak(t_kit *kit, long my_number, char *message, int is_last);
 
 /*
 ** MONITORING_FORK
