@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 11:28:48 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/17 15:39:45 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 20:38:50 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,19 @@ int		is_dead(t_kit *kit)
 	start_time = kit->vars->start_time;
 	while (i < kit->vars->number_phil)
 	{
-		if (kit->vars->last_meal[i] == 0)
-			i++;
-		else
+		sem_wait(kit->l_sem->s_eating);
+		if (kit->vars->last_meal[i] != 0)
 		{
 			if (get_time() - kit->vars->last_meal[i] >=
 						kit->vars->time_to_die * 1000)
 			{
 				philo_speak(kit, start_time, i, "died");
+				sem_post(kit->l_sem->s_eating);
 				return (1);
 			}
-			i++;
 		}
+		i++;
+		sem_post(kit->l_sem->s_eating);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:22:00 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/18 15:22:56 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 20:30:28 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct	s_lsem
 	long	nbr_fork_available;
 	sem_t	*s_speak;
 	sem_t	*s_meal;
+	sem_t	*s_eating;
 }				t_lsem;
 
 typedef struct	s_vars

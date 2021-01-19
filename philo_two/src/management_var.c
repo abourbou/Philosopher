@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/19 20:20:39 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 20:33:07 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,16 @@ t_lsem		*init_sem(long number_phil)
 	sem_unlink("sem_fork");
 	sem_unlink("sem_speak");
 	sem_unlink("sem_meal");
+	sem_unlink("sem_eating");
 	lstsem->s_fork = sem_open("sem_fork", O_CREAT, 00777, (int)number_phil);
 	lstsem->nbr_fork_available = number_phil;
 	lstsem->s_speak = sem_open("sem_speak", O_CREAT, 00777, 1);
 	lstsem->s_meal = sem_open("sem_meal", O_CREAT, 00777, 1);
+	lstsem->s_eating = sem_open("sem_eating", O_CREAT, 00777, 1);
 	if (lstsem->s_fork == SEM_FAILED || lstsem->s_meal == SEM_FAILED
-									|| lstsem->s_speak == SEM_FAILED)
+	|| lstsem->s_speak == SEM_FAILED || lstsem->s_eating == SEM_FAILED)
 	{
-		ft_putstr("Sem_open error\n");
+		ft_putstr("sem_open error\n");
 		free(lstsem);
 		return (0);
 	}
@@ -103,6 +105,7 @@ void		destroy_glob(t_vars *glob_var, t_lsem *lsem)
 		sem_unlink("sem_fork");
 		sem_unlink("sem_speak");
 		sem_unlink("sem_meal");
+		sem_unlink("sem_eating");
 		free(lsem);
 	}
 	free(glob_var);
