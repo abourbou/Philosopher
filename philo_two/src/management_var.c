@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/19 20:33:07 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 08:57:21 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_lsem		*init_sem(long number_phil)
 	if (lstsem->s_fork == SEM_FAILED || lstsem->s_meal == SEM_FAILED
 	|| lstsem->s_speak == SEM_FAILED || lstsem->s_eating == SEM_FAILED)
 	{
-		ft_putstr("sem_open error\n");
+		ft_putstr("Error : sem_open failed\n");
 		free(lstsem);
 		return (0);
 	}
