@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/18 21:29:00 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 10:53:17 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ t_lsem		*init_sem(long number_phil)
 	sem_unlink("sem_speak");
 	sem_unlink("sem_meal");
 	lstsem->s_fork = sem_open("sem_fork", O_CREAT, 00777, (int)number_phil);
-	lstsem->nbr_fork_available = number_phil;
 	lstsem->s_speak = sem_open("sem_speak", O_CREAT, 00777, 1);
 	lstsem->s_meal = sem_open("sem_meal", O_CREAT, 00777, 1);
 	if (lstsem->s_fork == SEM_FAILED || lstsem->s_meal == SEM_FAILED

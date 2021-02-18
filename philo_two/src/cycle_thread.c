@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/18 14:44:06 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 10:53:28 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,10 @@ void	philo_speak(t_kit *kit, long start_time, long my_number, char *message)
 
 void	take_fork(t_kit *kit, long my_number)
 {
-	while (kit->l_sem->nbr_fork_available < 2 && kit->vars->stop)
-		sleep_with_one_eye(kit->vars, 1);
 	sleep_with_one_eye(kit->vars, 1);
 	sem_wait(kit->l_sem->s_fork);
-	kit->l_sem->nbr_fork_available -= 1;
 	philo_speak(kit, kit->vars->start_time, my_number, "has taken a fork");
 	sem_wait(kit->l_sem->s_fork);
-	kit->l_sem->nbr_fork_available -= 1;
 	philo_speak(kit, kit->vars->start_time, my_number, "has taken a fork");
 }
 
@@ -63,7 +59,6 @@ int		philo_eat(t_kit *kit, long my_number)
 		return (1);
 	sem_post(kit->l_sem->s_fork);
 	sem_post(kit->l_sem->s_fork);
-	kit->l_sem->nbr_fork_available += 2;
 	return (0);
 }
 
@@ -82,7 +77,6 @@ void	*cycle_thread(void *vkit)
 		{
 			sem_post(kit->l_sem->s_fork);
 			sem_post(kit->l_sem->s_fork);
-			kit->l_sem->nbr_fork_available += 2;
 			return (0);
 		}
 		philo_speak(kit, kit->vars->start_time, kit->my_number, "is sleeping");
