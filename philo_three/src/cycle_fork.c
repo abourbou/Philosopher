@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/02/18 11:05:29 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 11:09:24 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ void	take_fork(t_kit *kit, long my_number)
 
 int		philo_eat(t_kit *kit, long my_number)
 {
+	sem_wait(kit->l_sem->s_eating);
 	philo_speak(kit, my_number, "is eating", 0);
 	kit->last_meal = get_time();
+	sem_post(kit->l_sem->s_eating);
 	kit->number_meal++;
 	if (kit->vars->max_meal > 0 && kit->number_meal >= kit->vars->max_meal)
 		return (1);
@@ -59,8 +61,8 @@ int		cycle_fork(void *vkit)
 	pthread_t	monitoring_pthread;
 
 	kit = vkit;
-	pthread_create(&monitoring_pthread, 0, monitoring_fork, vkit);
 	kit->last_meal = get_time();
+	pthread_create(&monitoring_pthread, 0, monitoring_fork, vkit);
 	while (1)
 	{
 		take_fork(kit, kit->my_number);

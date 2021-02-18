@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/02/18 10:44:16 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 11:09:07 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_lmutex	*init_mutex(long number_phil, int i)
 	}
 	pthread_mutex_init(&(lstmutex->m_speak), NULL);
 	pthread_mutex_init(&(lstmutex->m_meal), NULL);
+	pthread_mutex_init(&(lstmutex->m_eating), NULL);
 	return (lstmutex);
 }
 
@@ -55,7 +56,6 @@ static void	init_fix_glob(t_vars *glob_var, int argc, char **argv)
 	glob_var->max_meal = (argc == 6) ? ft_atoi(argv[5]) : -1;
 	glob_var->compt_meal = 0;
 	glob_var->stop = 0;
-	glob_var->compt_meal = 0;
 	glob_var->last_meal = 0;
 	glob_var->start_time = 0;
 }

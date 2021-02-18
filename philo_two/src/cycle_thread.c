@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/02/18 10:53:28 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 11:10:19 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,14 @@ void	take_fork(t_kit *kit, long my_number)
 
 int		philo_eat(t_kit *kit, long my_number)
 {
+	sem_wait(kit->l_sem->s_eating);
 	philo_speak(kit, kit->vars->start_time, my_number, "is eating");
 	sem_wait(kit->l_sem->s_meal);
 	kit->vars->last_meal[my_number] = get_time();
-	sem_post(kit->l_sem->s_meal);
 	if (kit->vars->max_meal > 0)
-	{
-		sem_wait(kit->l_sem->s_meal);
 		kit->vars->compt_meal[my_number] += 1;
-		sem_post(kit->l_sem->s_meal);
-	}
+	sem_post(kit->l_sem->s_meal);
+	sem_post(kit->l_sem->s_eating);
 	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_eat))
 		return (1);
 	sem_post(kit->l_sem->s_fork);

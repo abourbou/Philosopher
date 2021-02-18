@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/02/18 11:02:40 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 11:09:59 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_lsem		*init_sem(long number_phil)
 	sem_unlink("sem_pair_fork");
 	sem_unlink("sem_speak");
 	sem_unlink("sem_stop");
+	sem_unlink("sem_eating");
 	lstsem->s_fork = sem_open("sem_fork", O_CREAT, 00777, (int)number_phil);
 	lstsem->s_speak = sem_open("sem_speak", O_CREAT, 00777, 1);
 	lstsem->s_stop = sem_open("sem_stop", O_CREAT, 00777, 1);
@@ -81,6 +82,7 @@ void		destroy_glob(t_vars *glob_var, t_lsem *lsem)
 		sem_unlink("sem_pair_fork");
 		sem_unlink("sem_speak");
 		sem_unlink("sem_stop");
+		sem_unlink("sem_eating");
 		free(lsem);
 	}
 	free(glob_var);
