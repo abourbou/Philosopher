@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/19 14:44:33 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 11:05:29 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	philo_speak(t_kit *kit, long my_number, char *message, int is_last)
 
 void	take_fork(t_kit *kit, long my_number)
 {
-	sem_wait(kit->l_sem->s_pair_fork);
 	sem_wait(kit->l_sem->s_fork);
 	philo_speak(kit, my_number, "has taken a fork", 0);
 	sem_wait(kit->l_sem->s_fork);
@@ -51,7 +50,6 @@ int		philo_eat(t_kit *kit, long my_number)
 	usleep(kit->vars->time_to_eat * 1000);
 	sem_post(kit->l_sem->s_fork);
 	sem_post(kit->l_sem->s_fork);
-	sem_post(kit->l_sem->s_pair_fork);
 	return (0);
 }
 
@@ -70,7 +68,6 @@ int		cycle_fork(void *vkit)
 		{
 			sem_post(kit->l_sem->s_fork);
 			sem_post(kit->l_sem->s_fork);
-			sem_post(kit->l_sem->s_pair_fork);
 			exit(0);
 		}
 		philo_speak(kit, kit->my_number, "is sleeping", 0);
