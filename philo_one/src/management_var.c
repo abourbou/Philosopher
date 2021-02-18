@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 15:09:01 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/16 17:12:12 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 10:44:16 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,13 @@ t_lmutex	*init_mutex(long number_phil, int i)
 	if (!(lstmutex = malloc(sizeof(t_lmutex))))
 		return (0);
 	memset((void *)lstmutex, 0, sizeof(lstmutex));
-	if (!(lstmutex->m_fork = malloc(sizeof(pthread_mutex_t) * number_phil)) ||
-		!(lstmutex->is_fork_lock = malloc(sizeof(long) * number_phil)))
+	if (!(lstmutex->m_fork = malloc(sizeof(pthread_mutex_t) * number_phil)))
 	{
 		if (lstmutex->m_fork)
 			free(lstmutex->m_fork);
-		if (lstmutex->is_fork_lock)
-			free(lstmutex->is_fork_lock);
 		free(lstmutex);
 		return (0);
 	}
-	memset(lstmutex->is_fork_lock, 0, sizeof(long) * number_phil);
 	i = 0;
 	while (i < number_phil)
 	{
@@ -114,7 +110,6 @@ void		destroy_glob(t_vars *glob_var, t_lmutex *lmutex, int i)
 			ft_putstr("impossible to destroy lock mutex in m_compt_meal\n");
 		if (pthread_mutex_destroy(&(lmutex->m_speak)))
 			ft_putstr("impossible to destroy lock mutex in m_speak\n");
-		free(lmutex->is_fork_lock);
 		free((lmutex)->m_fork);
 		free(lmutex);
 	}

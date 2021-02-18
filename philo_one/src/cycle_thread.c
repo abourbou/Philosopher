@@ -6,7 +6,7 @@
 /*   By: abourbou <abourbou@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 15:22:10 by abourbou          #+#    #+#             */
-/*   Updated: 2021/01/18 14:42:45 by abourbou         ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 10:44:23 by abourbou         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,8 @@ void	philo_speak(t_kit *kit, long start_time, long my_number, char *message)
 
 void	take_fork(t_kit *kit, long my_number, long left_fork)
 {
-	while (kit->lmutex->is_fork_lock[my_number] && kit->vars->stop)
-		sleep_with_one_eye(kit->vars, 1);
-	kit->lmutex->is_fork_lock[left_fork] = 1;
 	pthread_mutex_lock(&(kit->lmutex->m_fork[left_fork]));
 	philo_speak(kit, kit->vars->start_time, my_number, "has taken a fork");
-	kit->lmutex->is_fork_lock[my_number] = 1;
 	pthread_mutex_lock(&(kit->lmutex->m_fork[my_number]));
 	philo_speak(kit, kit->vars->start_time, my_number, "has taken a fork");
 }
@@ -63,9 +59,7 @@ int		philo_eat(t_kit *kit, long my_number)
 	if (sleep_with_one_eye(kit->vars, kit->vars->time_to_eat))
 		return (1);
 	left_fork = (my_number == 0) ? kit->vars->number_phil - 1 : my_number - 1;
-	kit->lmutex->is_fork_lock[left_fork] = 0;
 	pthread_mutex_unlock(&kit->lmutex->m_fork[left_fork]);
-	kit->lmutex->is_fork_lock[my_number] = 0;
 	pthread_mutex_unlock(&kit->lmutex->m_fork[my_number]);
 	return (0);
 }
